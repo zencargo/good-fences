@@ -28,8 +28,12 @@ function validateConfig(config: Config, sourceFile: NormalizedPath, importRecord
         // Check whether:
         //   1) The import matches the rule
         //   2) If necessary, the source file has a relevant tag
+
         if (
-            minimatch(importRecord.rawImport, dependencyRule.dependency) &&
+            minimatch(importRecord.rawImport, dependencyRule.dependency, {
+                matchBase: true,
+                nonegate: true,
+            }) &&
             fileHasNecessaryTag(sourceFile, dependencyRule.accessibleTo)
         ) {
             // A rule matched, so the dependency is valid
